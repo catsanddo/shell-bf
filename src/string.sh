@@ -23,7 +23,7 @@ substr () {
         i=$((i+1))
     done
 
-    print '%s' "$result"
+    printf '%s' "$result"
     IFS="$ifs"
 }
 

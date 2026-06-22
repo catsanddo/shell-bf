@@ -25,7 +25,7 @@
 # Param: map_name key
 # Out: value
 map_get () {
-    eval printf \'%s\' '$'"$1"__"$2"
+    eval printf \'%s\' \"'$'"$1"__"$2"\"
 }
 
 # Param: map_name key value

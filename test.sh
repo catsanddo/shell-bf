@@ -83,7 +83,7 @@ test 'list_set 8 0 $list' '1 2 3 4 5 6 7 8' '1'
 test 'list_set 1 23 $list' '1 23 3 4 5 6 7 8'
 test 'list_set 7 23 $list' '1 2 3 4 5 6 7 23'
 list="a 'b c' d"
-test 'eval list-get 1 $list' 'b c'
+test 'eval list_get 1 $list' 'b c'
 unset list
 
 . src/list-lite.sh
