@@ -34,7 +34,7 @@ list_set () {
     delim=" "
     for x in "$@"; do
         [ "$i" -eq $((${#} - 1)) ] && delim=''
-        [ "$idx" -eq "$i" ] && echo -n "$val$delim" || echo -n "$x$delim"
+        [ "$idx" -eq "$i" ] && printf '%s' "$val$delim" || printf '%s' "$x$delim"
         i=$((i+1))
     done
 }

@@ -56,13 +56,12 @@ list_set () {
 
     i=0
     for x in "$@"; do
-        #[ "$idx" -eq "$i" ] && echo -n "$val " || echo -n "$x "
         shift
         [ "$idx" -eq "$i" ] && break
-        echo -n "$x${list_delimeter:- }"
+        printf '%s' "$x${list_delimeter:- }"
         i=$((i+1))
     done
-    echo -n "$val"
-    [ "$#" -eq 0 ] || echo -n "${list_delimeter:- }"
+    printf '%s' "$val"
+    [ "$#" -eq 0 ] || printf '%s' "${list_delimeter:- }"
     echo "$@"
 }

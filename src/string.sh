@@ -23,7 +23,7 @@ substr () {
         i=$((i+1))
     done
 
-    echo -n "$result"
+    print '%s' "$result"
     IFS="$ifs"
 }
 
@@ -42,7 +42,7 @@ get_char () {
 # Param: code
 # Out: ascii representation of code
 chr () {
-    printf '%b' "$(printf '\x%X' "$1")"
+    printf '%b' "$(printf '\%03o' "$1")"
 }
 
 # Param: char

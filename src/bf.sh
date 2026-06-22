@@ -112,7 +112,7 @@ while get_instruction; do
             shift_left
             ;;
         '.')
-            [ -n "$DEBUGGER" ] && echo -n 'Output: '
+            [ -n "$DEBUGGER" ] && printf '%s' 'Output: '
             chr "$(list_get $tape_head $tape)"
             [ -n "$DEBUGGER" ] && echo
             ;;
@@ -131,7 +131,7 @@ while get_instruction; do
         '[')
             if [ "`list_get $tape_head $tape`" -eq 0 ]; then
                 old_pc="${#buffer_lhs}"
-                cached_pc="$(eval echo -n '$'cache_open_"${old_pc}")"
+                cached_pc="$(eval printf \'%s\' '$'cache_open_"${old_pc}")"
                 if [ -z "$cached_pc" ]; then
                     jump_to_close || error "Could not find matching ']'"
                     eval cache_open_"${old_pc}"="${#buffer_lhs}"
@@ -142,7 +142,7 @@ while get_instruction; do
             ;;
         ']')
             old_pc="${#buffer_lhs}"
-            cached_pc="$(eval echo -n '$'cache_close_"${old_pc}")"
+            cached_pc="$(eval printf \'%s\' '$'cache_close_"${old_pc}")"
             if [ -z "$cached_pc" ]; then
                 jump_to_open || error "Could not find matching '['"
                 eval cache_close_"${old_pc}"="${#buffer_lhs}"

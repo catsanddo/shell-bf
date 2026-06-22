@@ -4,7 +4,7 @@ pad () {
     local i
     i=0
     while [ "$i" -lt "$1" ]; do
-        echo -n ' '
+        printf ' '
         i=$((i+1))
     done
 }
@@ -29,7 +29,7 @@ read_program () {
 
             case "$char" in
                 +|-|'<'|'>'|'['|']'|,|.)
-                    echo -n "$char"
+                    printf '%s' "$char"
                     ;;
             esac
         done
