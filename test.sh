@@ -109,6 +109,9 @@ string='    '
 test 'substr 1 2 "$string"' '  '
 unset string
 
+test 'chr 65' 'A'
+test 'ord A' '65'
+
 # END_USER_TESTS
 
 echo "$passed_tests tests out of $total_tests passed."

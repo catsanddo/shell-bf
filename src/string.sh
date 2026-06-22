@@ -42,7 +42,7 @@ get_char () {
 # Param: code
 # Out: ascii representation of code
 chr () {
-    printf '%b' "$(printf '\%03o' "$1")"
+    printf '%b' "$(printf '\\0%03o' "$1")"
 }
 
 # Param: char
