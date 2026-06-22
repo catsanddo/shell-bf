@@ -90,7 +90,7 @@ while get-instruction; do
         echo "$tape"
         echo "H: $tape_head"
         echo "PC: $foo_pc"
-        [ "$instruction" = ',' ] || read -p '> '
+        [ "$instruction" = ',' ] || read -p 'Press RETURN to continue> '
     fi
     case $instruction in
         '+')
@@ -154,5 +154,5 @@ while get-instruction; do
 done
 
 echo
-echo $tape
-echo $tape_head
+echo "Tape: $tape"
+echo "Tape head: $tape_head"
