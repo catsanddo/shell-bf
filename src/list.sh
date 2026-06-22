@@ -12,7 +12,7 @@
 
 # Param: idx ...
 # Out: ...[idx]
-list-get () {
+list_get () {
     [ "$1" -lt 0 ] && return 1
     shift $(($1 + 1))
     [ "$#" -le 0 ] && return 1
@@ -21,7 +21,7 @@ list-get () {
 
 # Param: idx val ...
 # Out: ... val ...
-list-set () {
+list_set () {
     local idx val i delim
 
     idx="$1"

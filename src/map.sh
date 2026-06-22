@@ -24,12 +24,12 @@
 
 # Param: map_name key
 # Out: value
-map-get () {
+map_get () {
     eval echo -n '$'"$1"__"$2"
 }
 
 # Param: map_name key value
-map-set () {
+map_set () {
     local key is_key_found
     is_key_found=
     for key in `eval echo -n '"$'"$1"'"'`; do
@@ -40,7 +40,7 @@ map-set () {
 }
 
 # Param: map_name
-map-delete () {
+map_delete () {
     local key
     for key in `eval echo -n '"$'"$1"'"'`; do
         eval unset "$1"__"$key"

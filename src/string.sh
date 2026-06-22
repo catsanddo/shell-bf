@@ -29,13 +29,13 @@ substr () {
 
 # Param: string
 # Out: string[1:]
-pop-char () {
+pop_char () {
     echo "${1#?}"
 }
 
 # Param: string
 # Out: string[0]
-get-char () {
+get_char () {
     echo "${1%"${1#?}"}"
 }
 

@@ -15,7 +15,7 @@ input_buffer=''
 char=''
 newline_present=
 
-shift-left () {
+shift_left () {
     tape_head=$((tape_head - 1))
     if [ "$tape_head" -lt 0 ]; then
         tape="0 $tape"
@@ -24,7 +24,7 @@ shift-left () {
     fi
 }
 
-shift-right () {
+shift_right () {
     tape_head=$((tape_head + 1))
     if [ "$tape_head" -ge "$tape_length" ]; then
         tape="$tape 0"
@@ -32,7 +32,7 @@ shift-right () {
     fi
 }
 
-read-input () {
+read_input () {
     if [ -z "$input_buffer" ] && [ -z "$newline_present" ]; then
         read -r input_buffer || return 1
         newline_present=1
@@ -42,33 +42,33 @@ read-input () {
     
     #char="`substr 0 1 "$input_buffer"`"
     #input_buffer=`substr 1 $((${#input_buffer} - 1)) "$input_buffer"`
-    char="$(get-char "$input_buffer")"
+    char="$(get_char "$input_buffer")"
     input_buffer="${input_buffer#?}"
 }
 
-get-instruction () {
+get_instruction () {
     instruction="$buffer_cursor"
-    buffer-next || return 1
+    buffer_next || return 1
 }
 
-jump-to-close () {
+jump_to_close () {
     local depth
     depth=1
 
     while [ "$depth" -gt 0 ]; do
         [ "$buffer_cursor" = '[' ] && depth=$((depth + 1))
         [ "$buffer_cursor" = ']' ] && depth=$((depth - 1))
-        buffer-next || return 1
+        buffer_next || return 1
     done
 }
 
-jump-to-open () {
+jump_to_open () {
     local depth
     depth=1
 
-    buffer-prev
+    buffer_prev
     while [ "$depth" -gt 0 ]; do
-        buffer-prev || return 1
+        buffer_prev || return 1
         [ "$buffer_cursor" = ']' ] && depth=$((depth + 1))
         [ "$buffer_cursor" = '[' ] && depth=$((depth - 1))
     done
@@ -79,10 +79,10 @@ jump-to-open () {
 program="$1"
 
 [ -z "$program" ] && error 'No input program!'
-[ -f "$program" ] && program="$(read-program "$program" 3)"
-buffer-set "$program"
+[ -f "$program" ] && program="$(read_program "$program" 3)"
+buffer_set "$program"
 
-while get-instruction; do
+while get_instruction; do
     if [ -n "$DEBUGGER" ]; then
         foo_pc="${#buffer_lhs}"
         echo "$program"
@@ -94,49 +94,49 @@ while get-instruction; do
     fi
     case $instruction in
         '+')
-            cell=`list-get $tape_head $tape`
+            cell=`list_get $tape_head $tape`
             cell=$((cell + 1))
             [ "$cell" -gt 255 ] && cell=0
-            tape=`list-set $tape_head $cell $tape`
+            tape=`list_set $tape_head $cell $tape`
             ;;
         '-')
-            cell=`list-get $tape_head $tape`
+            cell=`list_get $tape_head $tape`
             cell=$((cell - 1))
             [ "$cell" -lt 0 ] && cell=255
-            tape=`list-set $tape_head $cell $tape`
+            tape=`list_set $tape_head $cell $tape`
             ;;
         '>')
-            shift-right
+            shift_right
             ;;
         '<')
-            shift-left
+            shift_left
             ;;
         '.')
             [ -n "$DEBUGGER" ] && echo -n 'Output: '
-            chr "$(list-get $tape_head $tape)"
+            chr "$(list_get $tape_head $tape)"
             [ -n "$DEBUGGER" ] && echo
             ;;
         ',')
-            read-input || newline_present=
+            read_input || newline_present=
             if [ -n "$char" ]; then
-                tape="$(list-set $tape_head $(ord "$char") $tape)"
+                tape="$(list_set $tape_head $(ord "$char") $tape)"
                 char=
             elif [ -n "$newline_present" ]; then
-                tape="$(list-set $tape_head 10 $tape)"
+                tape="$(list_set $tape_head 10 $tape)"
                 newline_present=
             else # EOF
-                tape="$(list-set $tape_head 0 $tape)"
+                tape="$(list_set $tape_head 0 $tape)"
             fi
             ;;
         '[')
-            if [ "`list-get $tape_head $tape`" -eq 0 ]; then
+            if [ "`list_get $tape_head $tape`" -eq 0 ]; then
                 old_pc="${#buffer_lhs}"
                 cached_pc="$(eval echo -n '$'cache_open_"${old_pc}")"
                 if [ -z "$cached_pc" ]; then
-                    jump-to-close || error "Could not find matching ']'"
+                    jump_to_close || error "Could not find matching ']'"
                     eval cache_open_"${old_pc}"="${#buffer_lhs}"
                 else
-                    buffer-goto "$cached_pc"
+                    buffer_goto "$cached_pc"
                 fi
             fi
             ;;
@@ -144,10 +144,10 @@ while get-instruction; do
             old_pc="${#buffer_lhs}"
             cached_pc="$(eval echo -n '$'cache_close_"${old_pc}")"
             if [ -z "$cached_pc" ]; then
-                jump-to-open || error "Could not find matching '['"
+                jump_to_open || error "Could not find matching '['"
                 eval cache_close_"${old_pc}"="${#buffer_lhs}"
             else
-                buffer-goto "$cached_pc"
+                buffer_goto "$cached_pc"
             fi
             ;;
     esac

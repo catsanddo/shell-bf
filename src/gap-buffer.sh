@@ -18,14 +18,14 @@ buffer_rhs=''
 buffer_cursor=''
 
 # Params: new_buffer
-buffer-set () {
+buffer_set () {
     buffer_lhs=''
     buffer_rhs="$1"
     buffer_cursor="$(printf '%c' "$1")"
 }
 
 # Effect: shift one character from rhs to lhs buffer
-buffer-next () {
+buffer_next () {
     [ -z "$buffer_rhs" ] && return 1
     buffer_lhs="$buffer_lhs$buffer_cursor"
     buffer_rhs="${buffer_rhs#?}"
@@ -33,7 +33,7 @@ buffer-next () {
 }
 
 # Effect: shift one character from lhs to rhs buffer
-buffer-prev () {
+buffer_prev () {
     [ -z "$buffer_lhs" ] && return 1
     buffer_cursor="${buffer_lhs#"${buffer_lhs%?}"}"
     buffer_lhs="${buffer_lhs%?}"
@@ -43,14 +43,14 @@ buffer-prev () {
 # Param: idx
 # Effect: place the first idx bytes of the buffer into lhs, and the remaining
 #         bytes into rhs
-buffer-goto () {
+buffer_goto () {
     [ "$1" -lt 0 ] && set -- 0
     [ "$1" -gt $((${#buffer_lhs} + ${#buffer_rhs})) ] && \
         set -- "$((${#buffer_lhs} + ${#buffer_rhs}))"
     while [ "$1" -lt "${#buffer_lhs}" ]; do
-        buffer-prev
+        buffer_prev
     done
     while [ "$1" -gt "${#buffer_lhs}" ]; do
-        buffer-next
+        buffer_next
     done
 }

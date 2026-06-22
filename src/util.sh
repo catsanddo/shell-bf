@@ -18,7 +18,7 @@ error () {
 
 # Param: path fd
 # Out: program
-read-program () {
+read_program () {
     local line char
     eval exec "${2:-3}"'<' '"$1"'
 
@@ -40,7 +40,7 @@ read-program () {
 
 # Param: path fd
 # Out: file_contents
-read-file () {
+read_file () {
     local line ifs
     eval exec "$2"'<' '"$1"'
     ifs="$IFS"
