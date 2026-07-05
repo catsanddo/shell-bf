@@ -1,0 +1,29 @@
+# Instead of storing the pc as one continous string, and then seeking through it
+# all the time with substr (slow!), what if we store it as a sort of gap buffer.
+# It would be stored in two variables buffer_lhs and buffer_rhs. Because we only
+# every move by one character at a time in the buffer, we can just do so from
+# the middle of the buffer. Basically advancing the buffer to get the next
+# instruction goes from (start at beginning of buffer, slowly look at each char
+# in the buffer $pc times, discard the rest of the buffer and keep the remaining
+# char) to (start at $pc where we left off, get the first char, append it to
+# buffer_lhs, shift buffer_rhs over). I think this method will be more
+# performant.
+# Looping and seeking for the matching bracket might get a little more
+# complicated, but it shouldn't be by much. I also don't forsee any real
+# performace issues cropping up for looping. It may even improve, but this
+# requires testing.
+
+# Further ideas: cache loop points not by index, but by gap buffer state.
+# literally save a copy of buffer_lsh/rhs that we can just restore from based on
+# a given bracket's postion. Could be built at "compile time" before we begin
+# execution, or during execution as we go along. I do kind of like the idea of
+# doing a single pass sweep and filling out the entire jump table.
+
+############
+# COMPLETE #
+############
+# I also think it would be best to run through the entire program before
+# execution and remove all non-instruction characters. This is really a no
+# brainer for me. It might increase startup times, but we will pay for that cost
+# later anyways. Even more so if it ends up in a loop that we have to crawl
+# through multiple times. Plus it will save memory.
